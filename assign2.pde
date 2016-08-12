@@ -6,7 +6,7 @@ final int GAME_START = 0;
 final int GAME_RUN = 1;
 final int GAME_OVER = 2;
 
-PImage bg1, bg2, gameStart;
+PImage backGround1, backGround2, gameStart;
 PImage enemy;
 PImage fighter;
 PImage hp;
@@ -15,11 +15,11 @@ PImage start1, start2;
 PImage end1, end2;
 
 int gameState;
-int bg_1 = 0, bg2 = -641 ;
-int enemy_x= 0, enemy_y;
+int backGroundPosition_1 = 0, backGroundPosition_2 = -641 ;
+int enemyPosition_x= 0, enemyPosition_y;
 int blood = 20, coefficient = 2, bloodWidth;
-int treasure_x, treasure_y;
-int fighter_x = 589, fighter_y = 214;
+int treasurePosition_x, treasurePosition_y;
+int fighterPosition_x = 589, fighterPosition_y = 214;
 
 boolean upPressed = false, downPressed = false; 
 boolean rightPressed = false, leftPressed = false; 
@@ -27,8 +27,8 @@ boolean rightPressed = false, leftPressed = false;
 void setup () {
   size(640,480) ; 
   
-  bg1 = loadImage("img/bg1.png");
-  bg2 = loadImage("img/bg2.png");
+  backGround1 = loadImage("img/bg1.png");
+  backGround2 = loadImage("img/bg2.png");
   enemy = loadImage("img/enemy.png");
   fighter = loadImage("img/fighter.png");
   hp = loadImage("img/hp.png");
@@ -44,10 +44,10 @@ void setup () {
 void draw() {
   switch(gameState){
     case GAME_START:
-      enemy_y = floor(random(419));
-      fighter_x = 588;
-      treasure_x = floor(random(110, 600));
-      treasure_y = floor(random(440));
+      enemyPosition_y = floor(random(419));
+      fighterPosition_x = 588;
+      treasurePosition_x = floor(random(110, 600));
+      treasurePosition_y = floor(random(440));
       blood = 20;
       image(start2, 0, 0);
       if(mouseX >= 214 && mouseX <= 428 && 
@@ -59,42 +59,42 @@ void draw() {
       break;
      
     case GAME_RUN:   
-      //bg1
-      bg_1 += 1;
-      if(bg_1 == 641){
-        bg_1 = -640;
+      //backGround1
+      backGroundPosition_1 += 1;
+      if(backGroundPosition_1 == 641){
+        backGroundPosition_1 = -640;
       }
-      image(bg1, bg_1, 0);
+      image(backGround1, backGroundPosition_1, 0);
      
-      //bg2
-      bg_2 += 1 ;
-      if(bg2 == 641){
-        bg2 = -641;
+      //backGround2
+      backGroundPosition_2 += 1 ;
+      if(backGroundPosition_2 == 641){
+        backGroundPosition_2 = -641;
       }
-      image(bg2, bg_2, 0);
+      image(backGround2, backGroundPosition_2, 0);
          
       //enemy
-      enemy_x += 5;
-      enemy_x %= 640;
+      enemyPosition_x += 5;
+      enemyPosition_x %= 640;
       enemySpeed();
-      image(enemy, enemy_x, enemy_y);
+      image(enemy, enemyPosition_x, enemyPosition_y);
   
       //fighter
-      fighterMove_x();
-      fighterMove_y();
+      fighterPositionMove_x();
+      fighterPositionMove_y();
       fighterMax_x();
       fighterMax_y();
      
       //hitEnemy
       hitEnemy();
-      image(fighter, fighter_x, fighter_y);
+      image(fighter, fighterPosition_x, fighterPosition_y);
      
       //blood+treasure
       fill(255, 0, 0);
       getTreasure();
       calculateBlood();
       rect(10, 5, bloodWidth, 20 );
-      image(treasure, treasure_x, treasure_y);
+      image(treasure, treasurePosition_x, treasurePosition_y);
      
       //hp
       image(hp, 0 ,0);
@@ -154,40 +154,40 @@ void keyReleased(){
   }
 }
 
-int fighterMove_x(){
+int fighterPositionMove_x(){
   if(rightPressed) 
-    fighter_x += 6;
+    fighterPosition_x += 6;
   if(leftPressed)
-    fighter_x -= 6;
+    fighterPosition_x -= 6;
   
-   return fighter_x;
+   return fighterPosition_x;
 }
 
-int fighterMove_y(){
+int fighterPositionMove_y(){
   if(upPressed)
-    fighter_y -= 6;
+    fighterPosition_y -= 6;
   if(downPressed)
-    fighter_y += 6;
+    fighterPosition_y += 6;
     
-  return fighter_y;
+  return fighterPosition_y;
 }
 
 int fighterMax_x(){
-  if(fighter_x >= 589)
-    fighter_x = 589;
-  if(fighter_x <= 0)
-    fighter_x = 0;
+  if(fighterPosition_x >= 589)
+    fighterPosition_x = 589;
+  if(fighterPosition_x <= 0)
+    fighterPosition_x = 0;
   
-  return fighter_x;
+  return fighterPosition_x;
 }
 
 int fighterMax_y(){
-  if(fighter_y >= 429)
-    fighter_y = 429;
-  if(fighter_y <= 0)
-    fighter_y = 0;
+  if(fighterPosition_y >= 429)
+    fighterPosition_y = 429;
+  if(fighterPosition_y <= 0)
+    fighterPosition_y = 0;
   
-  return fighter_y;
+  return fighterPosition_y;
 }
 
 int calculateBlood(){
@@ -197,13 +197,13 @@ int calculateBlood(){
 }
 
 int getTreasure(){
-  if(fighter_x >= treasure_x - 40 &&
-     fighter_x <= treasure_x + 40 &&
-     fighter_y >= treasure_y - 40 &&
-     fighter_y <= treasure_y + 40){
+  if(fighterPosition_x >= treasurePosition_x - 40 &&
+     fighterPosition_x <= treasurePosition_x + 40 &&
+     fighterPosition_y >= treasurePosition_y - 40 &&
+     fighterPosition_y <= treasurePosition_y + 40){
        blood += 10;
-       treasure_x = floor(random(110,600));
-       treasure_y = floor(random(440));
+       treasurePosition_x = floor(random(110,600));
+       treasurePosition_y = floor(random(440));
      }
     if(blood >= 100)
       blood = 100;
@@ -212,19 +212,19 @@ int getTreasure(){
 }
 
 int enemySpeed(){
-  enemy_y += (fighter_y - enemy_y)/20;
+  enemyPosition_y += (fighterPosition_y - enemyPosition_y)/20;
   
-  return enemy_y;
+  return enemyPosition_y;
 }
 
 int hitEnemy(){
-  if(enemy_x >= fighter_x - 55 &&
-     enemy_x <= fighter_x + 50 &&
-     enemy_y >= fighter_y - 55 &&
-     enemy_y <= fighter_y + 50 ){
+  if(enemyPosition_x >= fighterPosition_x - 55 &&
+     enemyPosition_x <= fighterPosition_x + 50 &&
+     enemyPosition_y >= fighterPosition_y - 55 &&
+     enemyPosition_y <= fighterPosition_y + 50 ){
       blood -= 20; 
-      enemy_x = 0;
-      enemy_y = floor(random(419));
+      enemyPosition_x = 0;
+      enemyPosition_y = floor(random(419));
     }
      
   return blood;
