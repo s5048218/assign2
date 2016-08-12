@@ -1,6 +1,6 @@
 /*
 author:s5048218@gmail.com
-update:2016/07/29
+update:2016/08/12
 */
 final int GAME_START = 0;
 final int GAME_RUN = 1;
